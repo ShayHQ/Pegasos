@@ -1,0 +1,9 @@
+[submodule "opt/glfw"]
+	path = opt/glfw
+	url = https://github.com/glfw/glfw
+[submodule "opt/glm"]
+	path = opt/glm
+	url = https://github.com/g-truc/glm
+[submodule "opt/googletest"]
+	path = opt/googletest
+	url = https://github.com/google/googletest
