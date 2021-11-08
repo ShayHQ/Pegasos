@@ -6,3 +6,9 @@ project(CrazyEngine)
 
 
 find_package(Vulkan REQUIRED)
+
+add_subdirectory(Window)
+
+add_executable(CrazyApp main.cpp)
+
+target_link_libraries(CrazyApp Window)
