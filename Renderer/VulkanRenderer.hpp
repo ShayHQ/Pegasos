@@ -1,0 +1,67 @@
+#include <vulkan/vulkan.h>
+#include <optional>
+#include <vector>
+
+namespace craze{
+    class Window;
+
+    struct QueueFamiliyIndices{
+        int graphicsFamily = -1, presentFamiliy = -1;
+
+        bool isValid();
+        void findFamilies(VkPhysicalDevice physicalDevice);
+    };
+
+
+    struct PhysicalDeviceDetails{
+        VkPhysicalDevice gpu;
+        VkPhysicalDeviceProperties props;
+        VkPhysicalDeviceFeatures features;
+        QueueFamiliyIndices families;
+    };
+
+    struct SwapchainDetails{
+        VkSwapchainKHR swapchain;
+        std::vector<VkImage> images;
+        std::vector<VkImageView> imagesView;
+        VkFormat swapChainImageFormat;
+        VkExtent2D swapChainExtent;
+    };
+
+    struct VulkanDetails{
+        VkInstance instance;
+        VkSurfaceKHR surface;
+        PhysicalDeviceDetails physicalDetails;
+        VkDevice device;
+        VkQueue graphic, present;
+        SwapchainDetails swapchainDetails;
+    };
+
+    class VulkanRenderer : public Renderer
+    {
+        VulkanDetails details;
+    public:
+        VulkanRenderer(VulkanDetails details);
+        ~VulkanRenderer() override;
+    };
+
+    class VulkanRendererPlan : public RendererPlan{
+        VulkanDetails details;
+        Window* window;
+        std::vector<const char *> instancesExtensions;
+        std::vector<const char *> deviceExtensions;
+        
+    public:
+        VulkanRendererPlan(Window* window);
+        void initRendererAPI() override;
+        void createPresentation() override;
+        Renderer* getRenderer() override;
+    private:
+        void createInstance();
+        uint32_t ratePhysicalDevice(VkPhysicalDevice physicalDevice);
+        void pickPhysicalDevice();
+        void createSurface();
+        void createDevice();
+        void createSwapchain();
+    };
+};

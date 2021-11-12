@@ -6,3 +6,4 @@ namespace craze{
 };
 
 #include "Window/Window.hpp"
+#include "Renderer/Renderer.hpp"

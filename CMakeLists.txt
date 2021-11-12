@@ -8,7 +8,8 @@ project(CrazyEngine)
 find_package(Vulkan REQUIRED)
 
 add_subdirectory(Window)
+add_subdirectory(Renderer)
 
 add_executable(CrazyApp main.cpp)
 
-target_link_libraries(CrazyApp Window)
+target_link_libraries(CrazyApp Window VulkanRenderer)
