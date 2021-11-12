@@ -9,7 +9,7 @@ namespace craze{
         int graphicsFamily = -1, presentFamiliy = -1;
 
         bool isValid();
-        void findFamilies(VkPhysicalDevice physicalDevice);
+        void findFamilies(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
     };
 
 
@@ -48,6 +48,7 @@ namespace craze{
     class VulkanRendererPlan : public RendererPlan{
         VulkanDetails details;
         Window* window;
+        bool wasBuilt;
         std::vector<const char *> instancesExtensions;
         std::vector<const char *> deviceExtensions;
         
@@ -56,6 +57,7 @@ namespace craze{
         void initRendererAPI() override;
         void createPresentation() override;
         Renderer* getRenderer() override;
+        ~VulkanRendererPlan() override;
     private:
         void createInstance();
         uint32_t ratePhysicalDevice(VkPhysicalDevice physicalDevice);

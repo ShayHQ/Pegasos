@@ -1,3 +1,3 @@
-add_library(VulkanRenderer VulkanRendererInstance.cpp VulkanRendererDevice.cpp VulkanRendererPresentation.cpp VulkanRendererDeviceQueuesFamilies.cpp)
+add_library(VulkanRenderer RendererDefaults.cpp VulkanRendererInstance.cpp VulkanRendererDevice.cpp VulkanRendererPresentation.cpp VulkanRendererDeviceQueuesFamilies.cpp)
 
 target_link_libraries(VulkanRenderer glfw Vulkan::Vulkan)

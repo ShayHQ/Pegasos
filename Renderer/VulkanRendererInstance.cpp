@@ -20,13 +20,17 @@ VkApplicationInfo getCrazyApplicationInfo(){
 }
 
 VulkanRendererPlan::VulkanRendererPlan(Window* window){
-    this->window = window;
+    this->window    = window;
+    this->wasBuilt  = false;
     if (window){
         GLFWwindow* handler = static_cast<GLFWwindow*>(this->window->getHandler());
         uint32_t glfwExtensionCount = 0;
         auto extensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
         for (int i = 0; i < glfwExtensionCount; i++){
             this->instancesExtensions.push_back(extensions[i]);
+        }
+        if (glfwExtensionCount){
+            this->deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
         }
     }
 }
@@ -63,10 +67,6 @@ void VulkanRendererPlan::createInstance(){
     }
 }
 
-void VulkanRendererPlan::createDevice(){
-
-}
-
 void VulkanRendererPlan::createSurface(){
     if (this->window){
         GLFWwindow* handler = static_cast<GLFWwindow*>(this->window->getHandler());
@@ -74,5 +74,14 @@ void VulkanRendererPlan::createSurface(){
         if (glfwCreateWindowSurface(this->details.instance, handler, nullptr, &this->details.surface) != VK_SUCCESS){
             throw std::runtime_error("Failed to create surface!");
         }
+    }
+}
+
+VulkanRendererPlan::~VulkanRendererPlan(){
+    if (!wasBuilt){
+        // failed to create renderer cleanup resources
+        vkDestroyDevice(this->details.device, nullptr);
+        vkDestroySurfaceKHR(this->details.instance, this->details.surface, nullptr);
+        vkDestroyInstance(this->details.instance, nullptr);
     }
 }

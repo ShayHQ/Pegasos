@@ -1,3 +1,5 @@
+#pragma once
+
 namespace craze{
     class Renderer
     {
@@ -7,9 +9,10 @@ namespace craze{
 
     class RendererPlan{
     public:
-        virtual void initRendererAPI() = 0;
-        virtual void createPresentation() = 0;
-        virtual Renderer* getRenderer() = 0;
+        virtual void initRendererAPI()      = 0;
+        virtual void createPresentation()   = 0;
+        virtual Renderer* getRenderer()     = 0;
+        virtual ~RendererPlan()             = 0;
     };
 };
 
