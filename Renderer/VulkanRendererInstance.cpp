@@ -43,7 +43,8 @@ void VulkanRendererPlan::initRendererAPI(){
 }
 
 Renderer* VulkanRendererPlan::getRenderer(){
-    return nullptr; //new VulkanRenderer(this->details);
+    this->wasBuilt = true;
+    return new VulkanRenderer(this->details);
 }
 
 void VulkanRendererPlan::createInstance(){

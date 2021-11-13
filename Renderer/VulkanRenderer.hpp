@@ -41,9 +41,15 @@ namespace Pegasos{
 
     class VulkanRenderer : public Renderer
     {
-        VulkanDetails details;
+        VkInstance instance;
+        VkSurfaceKHR surface;
+        PhysicalDeviceDetails physicalDetails;
+        VkDevice device;
+        VkQueue graphic, present;
+        SwapchainDetails swapchainDetails;
+
     public:
-        VulkanRenderer(VulkanDetails details);
+        VulkanRenderer(VulkanDetails& details);
         ~VulkanRenderer() override;
     };
 

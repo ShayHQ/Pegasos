@@ -7,7 +7,9 @@ int main(){
     Pegasos::RendererPlan* plan = new Pegasos::VulkanRendererPlan(&window);
     plan->initRendererAPI();
     plan->createPresentation();
-    window.run();
+    const auto* Renderer = plan->getRenderer();
     delete plan;
+    window.run();
+    delete Renderer;
     return 0;
 }
