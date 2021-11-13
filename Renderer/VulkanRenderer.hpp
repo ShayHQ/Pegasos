@@ -50,6 +50,9 @@ namespace Pegasos{
 
     public:
         VulkanRenderer(VulkanDetails& details);
+        int addJob(RenderJob job) override;
+        void deleteJob(int jobID) override;
+        void drawJobs() override;
         ~VulkanRenderer() override;
     };
 

@@ -6,8 +6,10 @@ int main(){
     Pegasos::Window window("My Window", 600, 800);
     Pegasos::RendererBuilder builder(Pegasos::RendererPlans::VULKAN_API, &window);
     builder.build();
-    const auto* Renderer = builder.getRenderer();
+    auto* vulkanRenderer = builder.getRenderer();
+    VoidCallback drawOp = static_cast<VoidCallback>(std::bind(&Pegasos::Renderer::drawJobs, vulkanRenderer));
+    window.addCycleCallback(&drawOp);
     window.run();
-    delete Renderer;
+    delete vulkanRenderer;
     return 0;
 }
