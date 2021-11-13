@@ -6,7 +6,7 @@ namespace craze{
     class Window;
 
     struct QueueFamiliyIndices{
-        int graphicsFamily = -1, presentFamiliy = -1;
+        int32_t graphicsFamily = -1, presentFamiliy = -1;
 
         bool isValid();
         void findFamilies(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
@@ -24,8 +24,10 @@ namespace craze{
         VkSwapchainKHR swapchain;
         std::vector<VkImage> images;
         std::vector<VkImageView> imagesView;
-        VkFormat swapChainImageFormat;
+        VkSurfaceFormatKHR swapChainImageFormat;
         VkExtent2D swapChainExtent;
+        VkSurfaceTransformFlagBitsKHR swapPreTransform;
+        VkPresentModeKHR modeUsed;
     };
 
     struct VulkanDetails{
@@ -64,6 +66,9 @@ namespace craze{
         void pickPhysicalDevice();
         void createSurface();
         void createDevice();
+        void pickSurfaceFormat();
+        void pickSurfaceExtent();
+        void pickSurfacePresentMode();
         void createSwapchain();
     };
 };

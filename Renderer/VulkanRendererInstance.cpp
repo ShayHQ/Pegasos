@@ -42,10 +42,6 @@ void VulkanRendererPlan::initRendererAPI(){
     createDevice();
 }
 
-void VulkanRendererPlan::createPresentation(){
-    createSwapchain();   
-}
-
 Renderer* VulkanRendererPlan::getRenderer(){
     return nullptr; //new VulkanRenderer(this->details);
 }
@@ -80,6 +76,7 @@ void VulkanRendererPlan::createSurface(){
 VulkanRendererPlan::~VulkanRendererPlan(){
     if (!wasBuilt){
         // failed to create renderer cleanup resources
+        vkDestroySwapchainKHR(this->details.device, this->details.swapchainDetails.swapchain, nullptr);
         vkDestroyDevice(this->details.device, nullptr);
         vkDestroySurfaceKHR(this->details.instance, this->details.surface, nullptr);
         vkDestroyInstance(this->details.instance, nullptr);

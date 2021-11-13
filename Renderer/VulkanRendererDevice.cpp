@@ -42,7 +42,7 @@ void VulkanRendererPlan::pickPhysicalDevice(){
         }
     }
 
-    if (suitableDevices.rbegin()->first <= 0) {
+    if (suitableDevices.size() == 0 || suitableDevices.rbegin()->first <= 0) {
         throw std::runtime_error("failed to find a suitable GPU!");
     }
 
