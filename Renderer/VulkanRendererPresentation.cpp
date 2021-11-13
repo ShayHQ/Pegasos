@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <algorithm>
 
-using namespace craze;
+using namespace Pegasos;
 
 void VulkanRendererPlan::createPresentation(){
     if (this->window){

@@ -3,9 +3,9 @@
 #include "../Window/Window.hpp"
 #include <GLFW/glfw3.h>
 
-using namespace craze;
+using namespace Pegasos;
 
-VkApplicationInfo getCrazyApplicationInfo(){
+VkApplicationInfo getPegasosApplicationInfo(){
     VkApplicationInfo appInfo;
 
     appInfo.apiVersion          = VK_API_VERSION_1_0;
@@ -13,8 +13,8 @@ VkApplicationInfo getCrazyApplicationInfo(){
     appInfo.pNext               = nullptr;
     appInfo.applicationVersion  = VK_MAKE_VERSION(0, 0, 1);
     appInfo.engineVersion       = VK_MAKE_VERSION(0, 0, 1);
-    appInfo.pApplicationName    = "CrazyApp";
-    appInfo.pEngineName         = "Crazy Engine";
+    appInfo.pApplicationName    = "PegasosApp";
+    appInfo.pEngineName         = "Pegasos Engine";
 
     return appInfo;
 }
@@ -47,14 +47,14 @@ Renderer* VulkanRendererPlan::getRenderer(){
 }
 
 void VulkanRendererPlan::createInstance(){
-    VkApplicationInfo crazyAppInfo = getCrazyApplicationInfo();
+    VkApplicationInfo PegasosAppInfo = getPegasosApplicationInfo();
     VkInstanceCreateInfo createInfo;
 
     createInfo.pNext                    = nullptr;
     createInfo.sType                    = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.ppEnabledLayerNames      = nullptr;
     createInfo.enabledLayerCount        = 0;
-    createInfo.pApplicationInfo         = &crazyAppInfo;
+    createInfo.pApplicationInfo         = &PegasosAppInfo;
     createInfo.enabledExtensionCount    = static_cast<uint32_t>(this->instancesExtensions.size());
     createInfo.ppEnabledExtensionNames  = this->instancesExtensions.data();
     

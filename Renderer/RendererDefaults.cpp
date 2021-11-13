@@ -1,4 +1,4 @@
 #include "Renderer.hpp"
 
-craze::RendererPlan::~RendererPlan(){}
-craze::Renderer::~Renderer(){}
+Pegasos::RendererPlan::~RendererPlan(){}
+Pegasos::Renderer::~Renderer(){}

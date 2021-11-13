@@ -2,9 +2,9 @@
 #include <vector>
 #include <mutex>
 
-#define CRAZY_GLFW
+#define Pegasos_GLFW
 
-#ifdef CRAZY_GLFW
+#ifdef Pegasos_GLFW
 struct GLFWwindow;
 typedef GLFWwindow WindowType;
 #endif
@@ -12,7 +12,7 @@ typedef GLFWwindow WindowType;
 typedef std::function<void()> VoidCallback;
 typedef std::vector<VoidCallback*> CallbacksVector;
 
-namespace craze{
+namespace Pegasos{
     struct WindowDetails{
         uint32_t height, width;
         char* windowName;

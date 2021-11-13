@@ -1,6 +1,6 @@
 #pragma once
 
-namespace craze{
+namespace Pegasos{
     class Renderer
     {
     public:

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 
 add_subdirectory(opt)
-project(CrazyEngine)
+project(PegasosEngine)
 
 
 find_package(Vulkan REQUIRED)
@@ -10,6 +10,6 @@ find_package(Vulkan REQUIRED)
 add_subdirectory(Window)
 add_subdirectory(Renderer)
 
-add_executable(CrazyApp main.cpp)
+add_executable(PegasosApp main.cpp)
 
-target_link_libraries(CrazyApp Window VulkanRenderer)
+target_link_libraries(PegasosApp Window VulkanRenderer)

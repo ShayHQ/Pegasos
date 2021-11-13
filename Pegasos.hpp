@@ -1,4 +1,4 @@
-namespace craze{
+namespace Pegasos{
     class Engine;
     class Renderer;
     class Window;

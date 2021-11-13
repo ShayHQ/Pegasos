@@ -2,7 +2,7 @@
 #include <set>
 #include <map>
 
-using namespace craze;
+using namespace Pegasos;
 
 uint32_t VulkanRendererPlan::ratePhysicalDevice(VkPhysicalDevice physicalDevice){
     uint32_t score = 0;

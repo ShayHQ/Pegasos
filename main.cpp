@@ -1,10 +1,10 @@
-#include "Crazy.hpp"
+#include "Pegasos.hpp"
 #include <iostream>
 
 
 int main(){
-    craze::Window window("My Window", 600, 800);
-    craze::RendererPlan* plan = new craze::VulkanRendererPlan(&window);
+    Pegasos::Window window("My Window", 600, 800);
+    Pegasos::RendererPlan* plan = new Pegasos::VulkanRendererPlan(&window);
     plan->initRendererAPI();
     plan->createPresentation();
     window.run();

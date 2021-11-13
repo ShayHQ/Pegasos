@@ -2,7 +2,7 @@
 #include <optional>
 #include <vector>
 
-namespace craze{
+namespace Pegasos{
     class Window;
 
     struct QueueFamiliyIndices{

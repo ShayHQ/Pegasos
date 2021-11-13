@@ -1,8 +1,8 @@
 #include "Window.hpp"
 
-using namespace craze;
+using namespace Pegasos;
 
-#ifdef CRAZY_GLFW
+#ifdef Pegasos_GLFW
 #include <GLFW/glfw3.h>
 
 

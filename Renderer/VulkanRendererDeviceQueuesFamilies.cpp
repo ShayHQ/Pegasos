@@ -1,7 +1,7 @@
 #include "Renderer.hpp"
 
 
-using namespace craze;
+using namespace Pegasos;
 
 
 void QueueFamiliyIndices::findFamilies(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface){
