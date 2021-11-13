@@ -11,6 +11,7 @@ void VulkanRendererPlan::createPresentation(){
         pickSurfaceFormat();
         pickSurfacePresentMode();
         createSwapchain();
+        createSwapchainImageViews();
     }   
 }
 
@@ -112,4 +113,31 @@ void VulkanRendererPlan::createSwapchain(){
     vkGetSwapchainImagesKHR(this->details.device, this->details.swapchainDetails.swapchain, &imageCount, nullptr);
     this->details.swapchainDetails.images.resize(imageCount);
     vkGetSwapchainImagesKHR(this->details.device, this->details.swapchainDetails.swapchain, &imageCount, this->details.swapchainDetails.images.data());
+}
+
+void VulkanRendererPlan::createSwapchainImageViews(){
+    int i = 0;
+
+    this->details.swapchainDetails.imagesView.resize(this->details.swapchainDetails.images.size());
+    for (const auto& imageRef : this->details.swapchainDetails.images){
+        VkImageViewCreateInfo createInfo;
+
+        createInfo.pNext                                = nullptr;
+        createInfo.sType                                = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        createInfo.viewType                             = VK_IMAGE_VIEW_TYPE_2D;
+        createInfo.image                                = imageRef;
+        createInfo.components.a                         = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.components.b                         = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.components.g                         = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.components.r                         = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.subresourceRange.aspectMask          = VK_IMAGE_ASPECT_COLOR_BIT;
+        createInfo.subresourceRange.baseMipLevel        = 0;
+        createInfo.subresourceRange.levelCount          = 1;
+        createInfo.subresourceRange.baseArrayLayer      = 0;
+        createInfo.subresourceRange.layerCount          = 1;
+
+        if (vkCreateImageView(this->details.device, &createInfo, nullptr, this->details.swapchainDetails.imagesView.data() + i++) != VK_SUCCESS){
+            throw std::runtime_error("Failed to create image view!");
+        }
+    }
 }

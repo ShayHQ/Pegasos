@@ -70,5 +70,6 @@ namespace craze{
         void pickSurfaceExtent();
         void pickSurfacePresentMode();
         void createSwapchain();
+        void createSwapchainImageViews();
     };
 };
