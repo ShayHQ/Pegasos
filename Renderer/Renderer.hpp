@@ -1,11 +1,28 @@
 #pragma once
+#include <map>
 
 namespace Pegasos{
+    struct Vertex{
+        float x, y, z;
+        float r, g, b;
+    };
+
+    struct RenderJob{
+        std::vector<Vertex> vertcies;
+        std::string vertexShader;
+        std::string fragmentShader;
+    };
+
     class Window;
     class Renderer
     {
+    protected:
+        std::map<int, RenderJob> jobs;
     public:
-        virtual ~Renderer() = 0;
+        virtual int addJob(RenderJob job)   = 0;
+        virtual void deleteJob(int jobID)   = 0;
+        virtual void drawJobs()             = 0;
+        virtual ~Renderer()                 = 0;
     };
 
     class RendererPlan{
