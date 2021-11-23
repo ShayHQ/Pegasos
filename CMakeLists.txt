@@ -7,6 +7,9 @@ project(PegasosEngine)
 
 find_package(Vulkan REQUIRED)
 
+execute_process(COMMAND glslc ${CMAKE_CURRENT_SOURCE_DIR}Shaders/shader.vert -o ${CMAKE_BINARY_DIR}/vert.spv)
+execute_process(COMMAND glslc ${CMAKE_CURRENT_SOURCE_DIR}Shaders/shader.frag -o ${CMAKE_BINARY_DIR}/frag.spv)
+
 add_subdirectory(Window)
 add_subdirectory(Renderer)
 
