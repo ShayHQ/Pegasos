@@ -1,3 +1,5 @@
 add_library(VulkanRenderer VulkanRenderer.cpp RendererDefaults.cpp VulkanRendererInstance.cpp VulkanRendererDevice.cpp VulkanRendererPresentation.cpp VulkanRendererDeviceQueuesFamilies.cpp)
 
-target_link_libraries(VulkanRenderer glfw Vulkan::Vulkan)
+add_subdirectory(VulkanPipelinePlans)
+
+target_link_libraries(VulkanRenderer glfw Vulkan::Vulkan glm::glm VulkanPipelinesPlans)

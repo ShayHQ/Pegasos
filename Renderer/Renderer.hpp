@@ -1,17 +1,15 @@
 #pragma once
 #include <map>
 #include <vector>
-
+#include <glm/glm.hpp>
 namespace Pegasos{
     struct Vertex{
-        float x, y, z;
-        float r, g, b;
+        glm::vec3 position;
+        glm::vec3 color;
     };
 
     struct RenderJob{
         std::vector<Vertex> vertcies;
-        std::string vertexShader;
-        std::string fragmentShader;
     };
 
     class Window;

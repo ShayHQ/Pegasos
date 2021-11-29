@@ -1,6 +1,11 @@
+#pragma once
 #include <vulkan/vulkan.h>
 #include <optional>
 #include <vector>
+
+#ifndef VK_RENDERER
+#define VK_RENDERER
+#endif
 
 namespace Pegasos{
     class Window;
@@ -39,6 +44,7 @@ namespace Pegasos{
         SwapchainDetails swapchainDetails;
     };
 
+    class VulkanBasicPipelinePlan;
     class VulkanRenderer : public Renderer
     {
         VkInstance instance;
@@ -48,6 +54,7 @@ namespace Pegasos{
         VkQueue graphic, present;
         SwapchainDetails swapchainDetails;
 
+        friend class VulkanBasicPipelinePlan;
     public:
         VulkanRenderer(VulkanDetails& details);
         int addJob(RenderJob job) override;
