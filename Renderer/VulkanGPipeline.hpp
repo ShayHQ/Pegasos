@@ -38,6 +38,8 @@ namespace Pegasos{
         VkPipelineMultisampleStateCreateInfo multisamplingInfo;
         VkRenderPassCreateInfo renderPassInfo;
         VkPipelineColorBlendAttachmentState colorBlendAttachment;
+        VkPipelineColorBlendStateCreateInfo blendStateInfo;
+        VkPipelineDynamicStateCreateInfo dynamicCreateInfo;
 
 
         VkPipelineLayoutCreateInfo pipelineLayoutInfo;

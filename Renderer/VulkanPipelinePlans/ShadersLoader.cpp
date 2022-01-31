@@ -26,9 +26,9 @@ VkShaderModule createShaderModule(VkDevice device, std::string path){
 
     auto codeBuffer = readBinaryFile(path);
 
-    createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    createInfo.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     createInfo.codeSize = static_cast<std::size_t>(codeBuffer.size());
-    createInfo.pCode = reinterpret_cast<uint32_t*>(codeBuffer.data());
+    createInfo.pCode    = reinterpret_cast<uint32_t*>(codeBuffer.data());
 
     if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS){
         throw std::runtime_error(std::string("Unable to create a shader module from: " + path));
@@ -44,14 +44,14 @@ void VulkanBasicPipelinePlan::loadShaders(){
 
     this->shaderStages.resize(this->shaders.size());
 
-    this->shaderStages[0].module = this->shaders[0];
-    this->shaderStages[0].pName = "main";
-    this->shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-    this->shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
+    this->shaderStages[0].module    = this->shaders[0];
+    this->shaderStages[0].pName     = "main";
+    this->shaderStages[0].sType     = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    this->shaderStages[0].stage     = VK_SHADER_STAGE_VERTEX_BIT;
 
-    this->shaderStages[1].module = this->shaders[1];
-    this->shaderStages[1].pName = "main";
-    this->shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-    this->shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+    this->shaderStages[1].module    = this->shaders[1];
+    this->shaderStages[1].pName     = "main";
+    this->shaderStages[1].sType     = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    this->shaderStages[1].stage     = VK_SHADER_STAGE_FRAGMENT_BIT;
 
 }
