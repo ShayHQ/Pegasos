@@ -12,4 +12,13 @@ VulkanBasicPipelinePlan::VulkanBasicPipelinePlan(VulkanRenderer* renderer){
 
 void VulkanBasicPipelinePlan::createPipeline(){
 
+    
+    for (const auto shaderModule : this->shaders){
+        vkDestroyShaderModule(this->renderer->device, shaderModule, nullptr);
+    }
+}
+
+
+VulkanGPipeline VulkanBasicPipelinePlan::getPipeline(){
+    return this->pipeline;
 }

@@ -45,6 +45,7 @@ namespace Pegasos{
     };
 
     class VulkanBasicPipelinePlan;
+    class VulkanGPipeline;
     class VulkanRenderer : public Renderer
     {
         VkInstance instance;
@@ -53,6 +54,7 @@ namespace Pegasos{
         VkDevice device;
         VkQueue graphic, present;
         SwapchainDetails swapchainDetails;
+        VulkanGPipeline* pipeline;        
 
         friend class VulkanBasicPipelinePlan;
     public:

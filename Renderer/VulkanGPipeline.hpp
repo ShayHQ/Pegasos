@@ -28,6 +28,9 @@ namespace Pegasos{
     protected:
         VulkanRenderer* renderer;
 
+        std::vector<VkShaderModule> shaders;
+        std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
+        
         VkPipelineVertexInputStateCreateInfo vertexInputInfo;
         VkPipelineInputAssemblyStateCreateInfo inputAssembly;
         VkPipelineViewportStateCreateInfo viewportState;

@@ -1,4 +1,6 @@
 #include "Renderer.hpp"
+#include "VulkanRenderer.hpp"
+#include "VulkanGPipeline.hpp"
 #include <iostream>
 
 using namespace Pegasos;
@@ -11,9 +13,25 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
     this->surface           = details.surface;
     this->swapchainDetails  = details.swapchainDetails;
     this->device            = details.device;
+
+    VulkanBasicPipelinePlan plan(this);
+
+    plan.loadShaders();
+    plan.setFixedFunctions();
+    plan.createLayout();
+    plan.createSubpass();
+    plan.createPipeline();
+    
+
+    this->pipeline = new VulkanGPipeline;
+    *(this->pipeline) = plan.getPipeline();
 }
 
 VulkanRenderer::~VulkanRenderer(){
+    // vkDestroyPipeline(this->device, this->pipeline->pipelineRef, nullptr);
+    // vkDestroyPipelineLayout(this->device, this->pipeline->layout, nullptr);
+    // vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
+    delete this->pipeline;
     for (const auto& imageView : this->swapchainDetails.imagesView){
         vkDestroyImageView(this->device, imageView, nullptr);
     }
