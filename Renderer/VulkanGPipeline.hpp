@@ -18,8 +18,8 @@ namespace Pegasos{
         virtual void loadShaders()              = 0;
         virtual void setFixedFunctions()        = 0;
         virtual void createLayout()             = 0;
-        virtual void createSubpass()            = 0;
-        virtual void createPipeline()             = 0;
+        virtual void createRenderPass()         = 0;
+        virtual void createPipeline()           = 0;
 
         virtual VulkanGPipeline getPipeline()   = 0;
     };
@@ -31,23 +31,24 @@ namespace Pegasos{
         std::vector<VkShaderModule> shaders;
         std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
         
-        VkPipelineVertexInputStateCreateInfo vertexInputInfo;
-        VkPipelineInputAssemblyStateCreateInfo inputAssembly;
-        VkPipelineViewportStateCreateInfo viewportState;
-        VkPipelineRasterizationStateCreateInfo rasterizerInfo;
-        VkPipelineMultisampleStateCreateInfo multisamplingInfo;
-        VkRenderPassCreateInfo renderPassInfo;
-        VkPipelineColorBlendAttachmentState colorBlendAttachment;
-        VkPipelineColorBlendStateCreateInfo blendStateInfo;
-        VkPipelineDynamicStateCreateInfo dynamicCreateInfo;
+        VkPipelineVertexInputStateCreateInfo vertexInputInfo        = {};
+        VkPipelineInputAssemblyStateCreateInfo inputAssembly        = {};
+        VkPipelineViewportStateCreateInfo viewportState             = {};
+        VkPipelineRasterizationStateCreateInfo rasterizerInfo       = {};
+        VkPipelineMultisampleStateCreateInfo multisamplingInfo      = {};
+        VkPipelineColorBlendAttachmentState colorBlendAttachment    = {};
+        VkPipelineColorBlendStateCreateInfo blendStateInfo          = {};
+        VkPipelineDynamicStateCreateInfo dynamicCreateInfo          = {};
+        VkPipelineLayoutCreateInfo pipelineLayoutInfo               = {};
+        VkRenderPassCreateInfo renderPassCreateInfo                 = {};
+        
+        std::vector<VkSubpassDependency> subpassDependencies;
+        std::vector<VkAttachmentDescription> colourAttachments;
+        std::vector<VkAttachmentReference> colourAttachmentRefs;
+        VkSubpassDescription subpass = {};
 
-
-        VkPipelineLayoutCreateInfo pipelineLayoutInfo;
         VkViewport viewport;
         VkRect2D scissor;
-        VkAttachmentDescription colorAttachment;
-        VkAttachmentReference colorAttachmentRef;
-        VkSubpassDescription subpass;
 
 
         VulkanGPipeline pipeline;
@@ -55,7 +56,7 @@ namespace Pegasos{
         virtual void loadShaders() override;
         virtual void setFixedFunctions() override;
         virtual void createLayout() override;
-        virtual void createSubpass() override;
+        virtual void createRenderPass() override;
         virtual void createPipeline() override;
 
         virtual VulkanGPipeline getPipeline() override;

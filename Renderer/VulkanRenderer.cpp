@@ -16,10 +16,10 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
 
     VulkanBasicPipelinePlan plan(this);
 
+    plan.createRenderPass();
     plan.loadShaders();
     plan.setFixedFunctions();
     plan.createLayout();
-    plan.createSubpass();
     plan.createPipeline();
     
 
@@ -30,7 +30,7 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
 VulkanRenderer::~VulkanRenderer(){
     // vkDestroyPipeline(this->device, this->pipeline->pipelineRef, nullptr);
     vkDestroyPipelineLayout(this->device, this->pipeline->layout, nullptr);
-    // vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
+    vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
     delete this->pipeline;
     for (const auto& imageView : this->swapchainDetails.imagesView){
         vkDestroyImageView(this->device, imageView, nullptr);
