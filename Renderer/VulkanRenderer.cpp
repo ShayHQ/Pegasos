@@ -28,7 +28,7 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
 }
 
 VulkanRenderer::~VulkanRenderer(){
-    // vkDestroyPipeline(this->device, this->pipeline->pipelineRef, nullptr);
+    vkDestroyPipeline(this->device, this->pipeline->pipelineRef, nullptr);
     vkDestroyPipelineLayout(this->device, this->pipeline->layout, nullptr);
     vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
     delete this->pipeline;
