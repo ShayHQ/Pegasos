@@ -29,6 +29,9 @@ namespace Pegasos{
         VkSwapchainKHR swapchain;
         std::vector<VkImage> images;
         std::vector<VkImageView> imagesView;
+        std::vector<VkSemaphore> signalsImageAvailable;
+        std::vector<VkSemaphore> signalsImageRendered;
+        std::vector<VkFence> imagesInUse;
         VkSurfaceFormatKHR swapChainImageFormat;
         VkExtent2D swapChainExtent;
         VkSurfaceTransformFlagBitsKHR swapPreTransform;
@@ -89,5 +92,6 @@ namespace Pegasos{
         void pickSurfacePresentMode();
         void createSwapchain();
         void createSwapchainImageViews();
+        void createSynchros();
     };
 };

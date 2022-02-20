@@ -32,6 +32,11 @@ VulkanRenderer::~VulkanRenderer(){
     vkDestroyPipelineLayout(this->device, this->pipeline->layout, nullptr);
     vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
     delete this->pipeline;
+    for (int i = 0; i < this->swapchainDetails.imagesView.size(); i ++){
+        vkDestroySemaphore(this->device, this->swapchainDetails.signalsImageAvailable[i], nullptr);
+        vkDestroySemaphore(this->device, this->swapchainDetails.signalsImageRendered[i], nullptr);
+        vkDestroyFence(this->device, this->swapchainDetails.imagesInUse[i], nullptr);
+    }
     for (const auto& imageView : this->swapchainDetails.imagesView){
         vkDestroyImageView(this->device, imageView, nullptr);
     }

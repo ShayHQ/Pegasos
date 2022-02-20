@@ -73,6 +73,33 @@ void VulkanRendererPlan::pickSurfacePresentMode(){
     this->details.swapchainDetails.modeUsed = found;
 }
 
+void VulkanRendererPlan::createSynchros(){
+    auto synchroCount = this->details.swapchainDetails.imagesView.size();
+
+    this->details.swapchainDetails.imagesInUse.resize(synchroCount);
+    this->details.swapchainDetails.signalsImageAvailable.resize(synchroCount);
+    this->details.swapchainDetails.signalsImageRendered.resize(synchroCount);
+
+    auto& imagesInUse = this->details.swapchainDetails.imagesInUse;
+    auto& signalsImageAvailable = this->details.swapchainDetails.signalsImageAvailable;
+    auto& signalsImageRendered = this->details.swapchainDetails.signalsImageRendered;
+
+    VkSemaphoreCreateInfo semaphoreCreateInfo = {};
+    VkFenceCreateInfo fenceCreateInfo = {};
+
+    semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fenceCreateInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+    for (int i = 0; i < synchroCount; i ++){
+        if (vkCreateSemaphore(this->details.device, &semaphoreCreateInfo, nullptr, &signalsImageAvailable[i]) != VK_SUCCESS ||
+			vkCreateSemaphore(this->details.device, &semaphoreCreateInfo, nullptr, &signalsImageRendered[i]) != VK_SUCCESS ||
+			vkCreateFence(this->details.device, &fenceCreateInfo, nullptr, &imagesInUse[i]) != VK_SUCCESS)
+		{
+			throw std::runtime_error("Failed to create a Semaphore and/or Fence!");
+		}
+    }
+}
 
 // Don't run this function without running the picks functions above!
 void VulkanRendererPlan::createSwapchain(){
@@ -140,4 +167,5 @@ void VulkanRendererPlan::createSwapchainImageViews(){
             throw std::runtime_error("Failed to create image view!");
         }
     }
+    this->createSynchros();
 }

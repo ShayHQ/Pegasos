@@ -77,6 +77,11 @@ void VulkanRendererPlan::createSurface(){
 VulkanRendererPlan::~VulkanRendererPlan(){
     if (!wasBuilt){
         // failed to create renderer cleanup resources
+        for (int i = 0; i < this->details.swapchainDetails.imagesView.size(); i ++){
+            vkDestroySemaphore(this->details.device, this->details.swapchainDetails.signalsImageAvailable[i], nullptr);
+            vkDestroySemaphore(this->details.device, this->details.swapchainDetails.signalsImageRendered[i], nullptr);
+            vkDestroyFence(this->details.device, this->details.swapchainDetails.imagesInUse[i], nullptr);
+        }
         for (const auto& imageView : this->details.swapchainDetails.imagesView){
             vkDestroyImageView(this->details.device, imageView, nullptr);
         }
