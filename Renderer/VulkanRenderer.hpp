@@ -60,6 +60,8 @@ namespace Pegasos{
         VkQueue graphic, present;
         SwapchainDetails swapchainDetails;
         VulkanGPipeline* pipeline;        
+        VkCommandPool cmdPool;
+        std::vector<VkCommandBuffer> commandBuffers;
 
         friend class VulkanBasicPipelinePlan;
     public:
@@ -70,6 +72,8 @@ namespace Pegasos{
         ~VulkanRenderer() override;
     private:
         void createFramebuffers();
+        void createCmdBuffers();
+        void recordJobs();
     };
 
     class VulkanRendererPlan : public RendererPlan{

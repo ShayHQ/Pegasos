@@ -4,12 +4,31 @@
 
 using namespace Pegasos;
 
-void setVertexInput(VkPipelineVertexInputStateCreateInfo& vertexInCreateInfo){
+void setVertexInput(VkPipelineVertexInputStateCreateInfo& vertexInCreateInfo, 
+                    std::vector<VkVertexInputAttributeDescription>& vertexAttributes,
+                    std::vector<VkVertexInputBindingDescription>& vertexBindings){
+    vertexAttributes.resize(2);
+    vertexBindings.resize(1);
+
+    vertexAttributes[0].binding                         = 0;
+    vertexAttributes[0].format                          = VK_FORMAT_R32G32B32_SFLOAT;
+    vertexAttributes[0].location                        = 0;
+    vertexAttributes[0].offset                          = offsetof(Vertex, position);
+
+    vertexAttributes[1].binding                         = 0;
+    vertexAttributes[1].format                          = VK_FORMAT_R32G32B32_SFLOAT;
+    vertexAttributes[1].location                        = 1;
+    vertexAttributes[1].offset                          = offsetof(Vertex, color);
+
+    vertexBindings[0].binding                           = 0;
+    vertexBindings[0].inputRate                         = VK_VERTEX_INPUT_RATE_VERTEX;
+    vertexBindings[0].stride                            = sizeof(Vertex);
+
     vertexInCreateInfo.sType                            = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInCreateInfo.vertexBindingDescriptionCount    = 0;
-    vertexInCreateInfo.pVertexBindingDescriptions       = nullptr;
-    vertexInCreateInfo.vertexAttributeDescriptionCount  = 0;
-    vertexInCreateInfo.pVertexAttributeDescriptions     = nullptr;
+    vertexInCreateInfo.vertexBindingDescriptionCount    = vertexBindings.size();
+    vertexInCreateInfo.pVertexBindingDescriptions       = vertexBindings.data();
+    vertexInCreateInfo.vertexAttributeDescriptionCount  = vertexAttributes.size();
+    vertexInCreateInfo.pVertexAttributeDescriptions     = vertexAttributes.data();
 }
 
 void setInputAssembly(VkPipelineInputAssemblyStateCreateInfo& inputAssembly){
@@ -97,7 +116,7 @@ void setDynamicStates(VkPipelineDynamicStateCreateInfo& dynamicCreateInfo){
 }
 
 void VulkanBasicPipelinePlan::setFixedFunctions(){
-    setVertexInput(this->vertexInputInfo);
+    setVertexInput(this->vertexInputInfo, this->vertexAttributes, this->vertexBindings);
     setInputAssembly(this->inputAssembly);
     setDisplayState(this->viewportState, this->viewport, this->scissor, this->renderer->swapchainDetails);
     setRasterizer(this->rasterizerInfo);

@@ -45,6 +45,8 @@ namespace Pegasos{
         std::vector<VkSubpassDependency> subpassDependencies;
         std::vector<VkAttachmentDescription> colourAttachments;
         std::vector<VkAttachmentReference> colourAttachmentRefs;
+        std::vector<VkVertexInputAttributeDescription> vertexAttributes;
+        std::vector<VkVertexInputBindingDescription> vertexBindings;
         VkSubpassDescription subpass = {};
 
         VkViewport viewport;
