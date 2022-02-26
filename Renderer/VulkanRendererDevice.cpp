@@ -88,4 +88,7 @@ void VulkanRendererPlan::createDevice(){
     if (vkCreateDevice(this->details.physicalDetails.gpu, &createInfo, nullptr, &this->details.device) != VK_SUCCESS){
         throw std::runtime_error(std::string("Failed to create vulkan device of " + std::string(this->details.physicalDetails.props.deviceName)));
     }
+
+    vkGetDeviceQueue(this->details.device, this->details.physicalDetails.families.graphicsFamily, 0, &this->details.graphic);
+    vkGetDeviceQueue(this->details.device, this->details.physicalDetails.families.presentFamiliy, 0, &this->details.present);
 }
