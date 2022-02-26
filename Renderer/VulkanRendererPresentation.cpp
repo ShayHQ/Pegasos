@@ -104,9 +104,14 @@ void VulkanRendererPlan::createSynchros(){
 // Don't run this function without running the picks functions above!
 void VulkanRendererPlan::createSwapchain(){
     VkSurfaceCapabilitiesKHR surfaceCaps;
-    VkSwapchainCreateInfoKHR swapCreateInfo;
+    VkSwapchainCreateInfoKHR swapCreateInfo = {};
     uint32_t imageCount = 0;
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(this->details.physicalDetails.gpu, this->details.surface, &surfaceCaps);
+
+    imageCount = surfaceCaps.minImageCount;
+    if (surfaceCaps.maxImageCount > 0 && surfaceCaps.maxImageCount < surfaceCaps.minImageCount){
+        imageCount = surfaceCaps.maxImageCount;
+    }
 
     swapCreateInfo.pNext            = nullptr;
     swapCreateInfo.oldSwapchain     = VK_NULL_HANDLE;
@@ -121,7 +126,7 @@ void VulkanRendererPlan::createSwapchain(){
     swapCreateInfo.imageColorSpace  = this->details.swapchainDetails.swapChainImageFormat.colorSpace;
     swapCreateInfo.imageArrayLayers = 1;
     swapCreateInfo.clipped          = VK_TRUE;
-    swapCreateInfo.minImageCount    = std::min<uint32_t>(surfaceCaps.maxImageCount ,surfaceCaps.minImageCount + 1);
+    swapCreateInfo.minImageCount    = imageCount;
 
     if (this->details.physicalDetails.families.graphicsFamily != this->details.physicalDetails.families.presentFamiliy){
         swapCreateInfo.imageSharingMode         = VK_SHARING_MODE_CONCURRENT;
@@ -147,11 +152,12 @@ void VulkanRendererPlan::createSwapchainImageViews(){
 
     this->details.swapchainDetails.imagesView.resize(this->details.swapchainDetails.images.size());
     for (const auto& imageRef : this->details.swapchainDetails.images){
-        VkImageViewCreateInfo createInfo;
+        VkImageViewCreateInfo createInfo = {};
 
         createInfo.pNext                                = nullptr;
         createInfo.sType                                = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
         createInfo.viewType                             = VK_IMAGE_VIEW_TYPE_2D;
+        createInfo.format                               = this->details.swapchainDetails.swapChainImageFormat.format;
         createInfo.image                                = imageRef;
         createInfo.components.a                         = VK_COMPONENT_SWIZZLE_IDENTITY;
         createInfo.components.b                         = VK_COMPONENT_SWIZZLE_IDENTITY;

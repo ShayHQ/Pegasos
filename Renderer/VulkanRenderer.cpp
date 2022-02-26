@@ -47,7 +47,7 @@ VulkanRenderer::~VulkanRenderer(){
 }
 
 void VulkanRenderer::drawJobs(){
-    std::cout << "Trying to render stuff on the screen\n";
+    //TODO: drawing
 }
 
 void VulkanRenderer::deleteJob(int jobID){

@@ -5,6 +5,10 @@
 
 using namespace Pegasos;
 
+const std::vector<const char*> validationLayers = {
+    "VK_LAYER_KHRONOS_validation"
+};
+
 VkApplicationInfo getPegasosApplicationInfo(){
     VkApplicationInfo appInfo;
 
@@ -49,12 +53,12 @@ Renderer* VulkanRendererPlan::getRenderer(){
 
 void VulkanRendererPlan::createInstance(){
     VkApplicationInfo PegasosAppInfo = getPegasosApplicationInfo();
-    VkInstanceCreateInfo createInfo;
+    VkInstanceCreateInfo createInfo = {};
 
     createInfo.pNext                    = nullptr;
     createInfo.sType                    = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-    createInfo.ppEnabledLayerNames      = nullptr;
-    createInfo.enabledLayerCount        = 0;
+    createInfo.ppEnabledLayerNames      = validationLayers.data();
+    createInfo.enabledLayerCount        = validationLayers.size();
     createInfo.pApplicationInfo         = &PegasosAppInfo;
     createInfo.enabledExtensionCount    = static_cast<uint32_t>(this->instancesExtensions.size());
     createInfo.ppEnabledExtensionNames  = this->instancesExtensions.data();
