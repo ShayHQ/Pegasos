@@ -26,6 +26,7 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
 
     this->pipeline = new VulkanGPipeline;
     *(this->pipeline) = plan.getPipeline();
+    createFramebuffers();
 }
 
 VulkanRenderer::~VulkanRenderer(){
@@ -34,6 +35,9 @@ VulkanRenderer::~VulkanRenderer(){
     }
     this->jobs.clear();
 
+    for (const auto& fbuffer : this->swapchainDetails.framebuffers){
+        vkDestroyFramebuffer(this->device, fbuffer, nullptr);
+    }
     vkDestroyPipeline(this->device, this->pipeline->pipelineRef, nullptr);
     vkDestroyPipelineLayout(this->device, this->pipeline->layout, nullptr);
     vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
@@ -50,6 +54,28 @@ VulkanRenderer::~VulkanRenderer(){
     vkDestroyDevice(this->device, nullptr);
     vkDestroySurfaceKHR(this->instance, this->surface, nullptr);
     vkDestroyInstance(this->instance, nullptr);
+}
+
+void VulkanRenderer::createFramebuffers(){
+    this->swapchainDetails.framebuffers.resize(this->swapchainDetails.imagesView.size());
+
+    for (int i = 0; i < this->swapchainDetails.imagesView.size(); i++){
+        VkFramebufferCreateInfo createInfo = {};
+        std::array<VkImageView, 1> attachments = {
+            this->swapchainDetails.imagesView[i]
+        };
+        createInfo.width            = this->swapchainDetails.swapChainExtent.width;
+        createInfo.height           = this->swapchainDetails.swapChainExtent.height;
+        createInfo.layers           = 1;
+        createInfo.sType            = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+        createInfo.attachmentCount  = attachments.size();
+        createInfo.pAttachments     = attachments.data();
+        createInfo.renderPass       = this->pipeline->renderPass;
+        
+        if (vkCreateFramebuffer(this->device, &createInfo, nullptr, &this->swapchainDetails.framebuffers[i]) != VK_SUCCESS){
+            throw std::runtime_error("Failed to create frame buffer");
+        }
+    }
 }
 
 void VulkanRenderer::drawJobs(){
