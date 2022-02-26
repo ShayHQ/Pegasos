@@ -8,17 +8,20 @@ namespace Pegasos{
         glm::vec3 color;
     };
 
-    struct RenderJob{
-        std::vector<Vertex> vertcies;
+    class RenderJob{
+    public:
+        virtual uint32_t size() = 0;
+        virtual void* data()    = 0;
+        virtual ~RenderJob()    = 0;
     };
 
     class Window;
     class Renderer
     {
     protected:
-        std::map<int, RenderJob> jobs;
+        std::map<int, RenderJob*> jobs;
     public:
-        virtual int addJob(RenderJob job)   = 0;
+        virtual int addJob(std::vector<Vertex> job)   = 0;
         virtual void deleteJob(int jobID)   = 0;
         virtual void drawJobs()             = 0;
         virtual ~Renderer()                 = 0;

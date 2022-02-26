@@ -23,6 +23,7 @@ namespace Pegasos{
         VkPhysicalDeviceProperties props;
         VkPhysicalDeviceFeatures features;
         QueueFamiliyIndices families;
+        VkPhysicalDeviceMemoryProperties deviceMemProps;
     };
 
     struct SwapchainDetails{
@@ -62,7 +63,7 @@ namespace Pegasos{
         friend class VulkanBasicPipelinePlan;
     public:
         VulkanRenderer(VulkanDetails& details);
-        int addJob(RenderJob job) override;
+        int addJob(std::vector<Vertex> job) override;
         void deleteJob(int jobID) override;
         void drawJobs() override;
         ~VulkanRenderer() override;

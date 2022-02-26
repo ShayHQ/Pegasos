@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include "VulkanRenderer.hpp"
 #include "VulkanGPipeline.hpp"
+#include "VulkanMesh.hpp"
 #include <iostream>
 
 using namespace Pegasos;
@@ -28,6 +29,11 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
 }
 
 VulkanRenderer::~VulkanRenderer(){
+    for (const auto& job : this->jobs){
+        delete job.second;
+    }
+    this->jobs.clear();
+
     vkDestroyPipeline(this->device, this->pipeline->pipelineRef, nullptr);
     vkDestroyPipelineLayout(this->device, this->pipeline->layout, nullptr);
     vkDestroyRenderPass(this->device, this->pipeline->renderPass, nullptr);
@@ -61,12 +67,12 @@ void VulkanRenderer::deleteJob(int jobID){
 }
 
 
-int VulkanRenderer::addJob(RenderJob job){
+int VulkanRenderer::addJob(std::vector<Vertex> job){
     // Implementation is still not synced with drawing
     const int MAXIMUM_RETRIES = 10;
     int jobID = 0;
     int retries = 0;
-    std::map<int, RenderJob>::iterator found;
+    std::map<int, RenderJob*>::iterator found;
     do{
         jobID = rand() / INT16_MAX;
         found = this->jobs.find(jobID);
@@ -75,7 +81,7 @@ int VulkanRenderer::addJob(RenderJob job){
         }
     }while(found != this->jobs.end());
 
-    this->jobs.insert(std::make_pair(jobID, job));
+    this->jobs.insert(std::make_pair(jobID, new VulkanMesh(this->device, this->physicalDetails.deviceMemProps, job)));
 
     return jobID;
 }

@@ -7,7 +7,7 @@ using namespace Pegasos;
 RendererPlan::~RendererPlan(){}
 Renderer::~Renderer(){}
 
-
+RenderJob::~RenderJob(){}
 RendererBuilder::RendererBuilder(RendererPlans plan, Window* window){
     switch (plan)
     {

@@ -1,4 +1,4 @@
-add_library(VulkanRenderer VulkanRenderer.cpp RendererDefaults.cpp VulkanRendererInstance.cpp VulkanRendererDevice.cpp VulkanRendererPresentation.cpp VulkanRendererDeviceQueuesFamilies.cpp)
+add_library(VulkanRenderer VulkanRenderer.cpp RendererDefaults.cpp VulkanRendererInstance.cpp VulkanRendererDevice.cpp VulkanRendererPresentation.cpp VulkanRendererDeviceQueuesFamilies.cpp VulkanMesh.cpp)
 
 add_subdirectory(VulkanPipelinePlans)
 

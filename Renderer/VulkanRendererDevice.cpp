@@ -51,6 +51,7 @@ void VulkanRendererPlan::pickPhysicalDevice(){
     physicalDetails.families.findFamilies(physicalDetails.gpu, this->details.surface);
     vkGetPhysicalDeviceFeatures(physicalDetails.gpu, &physicalDetails.features);
     vkGetPhysicalDeviceProperties(physicalDetails.gpu, &physicalDetails.props);
+    vkGetPhysicalDeviceMemoryProperties(physicalDetails.gpu, &physicalDetails.deviceMemProps);
 }
 
 void VulkanRendererPlan::createDevice(){
