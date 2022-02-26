@@ -6,7 +6,9 @@
 using namespace Pegasos;
 
 const std::vector<const char*> validationLayers = {
+    #ifndef NDEBUG
     "VK_LAYER_KHRONOS_validation"
+    #endif
 };
 
 VkApplicationInfo getPegasosApplicationInfo(){
