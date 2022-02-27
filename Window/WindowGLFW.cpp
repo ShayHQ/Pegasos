@@ -5,6 +5,19 @@ using namespace Pegasos;
 #ifdef Pegasos_GLFW
 #include <GLFW/glfw3.h>
 
+void drawFps(){
+    static uint32_t fpsCount;
+    static double lastTime = glfwGetTime();
+
+    fpsCount++;
+    double currentTime = glfwGetTime();
+    if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1 sec ago
+         // printf and reset timer
+         printf("%d fps\n", fpsCount);
+         fpsCount = 0;
+         lastTime += 1.0;
+     }
+}
 
 Window::Window(char* windowName, uint32_t height, uint32_t width, uint32_t apiHint){
     this->details.height = height;
@@ -33,6 +46,7 @@ void Window::run(){
             (*callback)();
         }
 
+        drawFps();
         glfwPollEvents();
 
         callbackMutex.unlock();
