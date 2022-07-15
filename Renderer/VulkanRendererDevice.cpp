@@ -55,7 +55,7 @@ void VulkanRendererPlan::pickPhysicalDevice(){
 }
 
 void VulkanRendererPlan::createDevice(){
-    VkDeviceCreateInfo createInfo;
+    VkDeviceCreateInfo createInfo = {};
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     std::set<uint32_t> queueFamilies;
     
@@ -67,7 +67,7 @@ void VulkanRendererPlan::createDevice(){
     queueFamilies.insert(this->details.physicalDetails.families.presentFamiliy);
 
     for (const auto& familyQueue : queueFamilies){
-        VkDeviceQueueCreateInfo queueCreateInfo;
+        VkDeviceQueueCreateInfo queueCreateInfo = {};
         queueCreateInfo.pNext               = nullptr;
         queueCreateInfo.sType               = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queueCreateInfo.pQueuePriorities    = &priority;
