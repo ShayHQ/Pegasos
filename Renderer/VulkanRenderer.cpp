@@ -67,7 +67,7 @@ void VulkanRenderer::createFramebuffers(){
 
     for (int i = 0; i < this->swapchainDetails.imagesView.size(); i++){
         VkFramebufferCreateInfo createInfo = {};
-        std::array<VkImageView, 1> attachments = {
+        std::vector<VkImageView> attachments = {
             this->swapchainDetails.imagesView[i]
         };
         createInfo.width            = this->swapchainDetails.swapChainExtent.width;

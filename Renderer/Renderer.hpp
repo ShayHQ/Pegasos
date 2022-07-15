@@ -2,6 +2,11 @@
 #include <map>
 #include <vector>
 #include <glm/glm.hpp>
+
+#ifdef _WIN32
+#include <stdexcept>
+#endif
+
 namespace Pegasos{
     struct Vertex{
         glm::vec3 position;
