@@ -1,18 +1,25 @@
+include_directories(./ ./Vulkan ./OpenGL)
+
 add_library(VulkanRenderer 
-    VulkanRenderer.cpp VulkanRendererInstance.cpp VulkanRendererDevice.cpp VulkanRendererPresentation.cpp VulkanRendererDeviceQueuesFamilies.cpp VulkanMesh.cpp
+    Vulkan/VulkanRenderer.cpp 
+    Vulkan/VulkanRendererInstance.cpp 
+    Vulkan/VulkanRendererDevice.cpp 
+    Vulkan/VulkanRendererPresentation.cpp 
+    Vulkan/VulkanRendererDeviceQueuesFamilies.cpp
+    Vulkan/VulkanMesh.cpp
 )
 
 add_library(GLRenderer 
-    GLRenderer.cpp
-    GLRendererPlan.cpp
+    OpenGL/GLRenderer.cpp
+    OpenGL/GLRendererPlan.cpp
 )
 
 add_library(Renderer 
     RendererDefaults.cpp
 )
 
-add_subdirectory(VulkanPipelinePlans)
-add_subdirectory(GLPipelinePlans)
+add_subdirectory(Vulkan/VulkanPipelinePlans)
+add_subdirectory(OpenGL/GLPipelinePlans)
 
 target_link_libraries(VulkanRenderer glfw glm::glm Vulkan::Vulkan glm::glm VulkanPipelinesPlans)
 target_link_libraries(GLRenderer glfw glm::glm GLAD_LIB GLPipelinePlans)

@@ -1,3 +1,3 @@
 #include "Renderer.hpp"
-#include "VulkanRenderer.hpp"
-#include "GLRenderer.hpp"
+#include "./Vulkan/VulkanRenderer.hpp"
+#include "./OpenGL/GLRenderer.hpp"
