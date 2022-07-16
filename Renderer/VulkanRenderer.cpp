@@ -192,33 +192,6 @@ void VulkanRenderer::drawJobs(){
     currentFrame = (currentFrame + 1) % MAX_FPS_DRAW;
 }
 
-void VulkanRenderer::deleteJob(int jobID){
-    // Implementation is still not synced with drawing
-    auto found = this->jobs.find(jobID);
-    if (found == this->jobs.end()){
-        throw std::runtime_error(std::string("JobID: "+ jobID) + " Is not exists!");
-    }
-
-    this->jobs.erase(found);
-    recordJobs();
-}
-
-
-int VulkanRenderer::addJob(std::vector<Vertex> job){
-    // Implementation is still not synced with drawing
-    const int MAXIMUM_RETRIES = 10;
-    int jobID = 0;
-    int retries = 0;
-    std::map<int, RenderJob*>::iterator found;
-    do{
-        jobID = rand() / INT16_MAX;
-        found = this->jobs.find(jobID);
-        if (MAXIMUM_RETRIES == retries++){
-            throw std::runtime_error("Failed to add render job, nax retries reached!");
-        }
-    }while(found != this->jobs.end());
-
-    this->jobs.insert(std::make_pair(jobID, new VulkanMesh(this->device, this->physicalDetails.deviceMemProps, job)));
-    recordJobs();
-    return jobID;
+RenderJob* VulkanRenderer::createJob(std::vector<Vertex> job){
+    return new VulkanMesh(this->device, this->physicalDetails.deviceMemProps, job);
 }

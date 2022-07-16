@@ -66,14 +66,14 @@ namespace Pegasos{
         friend class VulkanBasicPipelinePlan;
     public:
         VulkanRenderer(VulkanDetails& details);
-        int addJob(std::vector<Vertex> job) override;
-        void deleteJob(int jobID) override;
-        void drawJobs() override;
         ~VulkanRenderer() override;
+    protected:
+        virtual void recordJobs() override;
+        virtual RenderJob* createJob(std::vector<Vertex>) override;
     private:
         void createFramebuffers();
         void createCmdBuffers();
-        void recordJobs();
+        virtual void drawJobs() override;
     };
 
     class VulkanRendererPlan : public RendererPlan{

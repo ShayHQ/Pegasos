@@ -25,9 +25,12 @@ namespace Pegasos{
     {
     protected:
         std::map<int, RenderJob*> jobs;
+        virtual void recordJobs()           = 0;
+        
+        virtual RenderJob* createJob(std::vector<Vertex>) = 0;
     public:
-        virtual int addJob(std::vector<Vertex> job)   = 0;
-        virtual void deleteJob(int jobID)   = 0;
+        int addJob(std::vector<Vertex> job);
+        void deleteJob(int jobID);
         virtual void drawJobs()             = 0;
         virtual ~Renderer()                 = 0;
     };
@@ -41,7 +44,8 @@ namespace Pegasos{
     };
 
     enum RendererPlans{
-        VULKAN_API
+        VULKAN_API,
+        OPEN_GL_API
     };
     class RendererBuilder{
         bool built = false;
@@ -55,6 +59,3 @@ namespace Pegasos{
         ~RendererBuilder();
     };
 };
-
-
-#include "VulkanRenderer.hpp"

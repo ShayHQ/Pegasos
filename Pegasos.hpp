@@ -6,4 +6,4 @@ namespace Pegasos{
 };
 
 #include "Window/Window.hpp"
-#include "Renderer/Renderer.hpp"
+#include "Renderer/PegasosRenderer.hpp"

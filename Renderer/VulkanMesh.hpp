@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include "VulkanRenderer.hpp"
 
 namespace Pegasos{
     class VulkanMesh : public RenderJob

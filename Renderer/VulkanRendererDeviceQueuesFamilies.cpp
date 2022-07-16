@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include "VulkanRenderer.hpp"
 
 
 using namespace Pegasos;
