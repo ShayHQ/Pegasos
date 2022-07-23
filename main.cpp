@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-int main(){
+int main(int argc, char ** argv ){
     // try{
         std::vector<Pegasos::Vertex> vertecies1 = {
             {{0.0f, -0.7f, 0.0f},{1.0f, 0.0f, 0.0f}},
@@ -14,8 +14,12 @@ int main(){
             {{-0.4f, -0.4f, 0.0f},{1.0f, 0.0f, 0.0f}},
             {{0.4f, -0.4f, 0.0f},{0.0f, 1.0f, 0.0f}}  
         };
-        Pegasos::Window window("My Window", 600, 800, 0);
-        Pegasos::RendererBuilder builder(Pegasos::RendererPlans::VULKAN_API, &window);
+        auto usedAPI = Pegasos::RendererPlans::VULKAN_API;
+        if (argc > 1){
+            usedAPI = Pegasos::RendererPlans::OPEN_GL_API;
+        }
+        Pegasos::Window window("My Window", 600, 800, usedAPI);
+        Pegasos::RendererBuilder builder(usedAPI, &window);
         builder.build();
         auto* vulkanRenderer = builder.getRenderer();
         vulkanRenderer->addJob(vertecies1);
