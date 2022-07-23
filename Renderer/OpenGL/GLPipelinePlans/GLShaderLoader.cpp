@@ -18,6 +18,7 @@ layout (location = 0) out vec3 fragOut; \n\
 void main(){ \n\
     gl_Position = vec4(vertexPos, 1.0); \n\
     fragOut = vertexColor;   \n\
+    gl_Position.y *= -1;\n\
 }";
 
 
