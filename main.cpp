@@ -3,18 +3,30 @@
 
 
 int main(){
-    try{
-        Pegasos::Window window("My Window", 600, 800);
+    // try{
+        std::vector<Pegasos::Vertex> vertecies1 = {
+            {{0.0f, -0.7f, 0.0f},{1.0f, 0.0f, 0.0f}},
+            {{0.4f, 0.4f, 0.0f},{0.0f, 1.0f, 0.0f}},
+            {{-0.4f, 0.4f, 0.0f},{0.0f, 0.0f, 1.0f}}  
+        };
+        std::vector<Pegasos::Vertex> vertecies2 = {
+            {{0.0f, 0.7f, 0.0f},{0.0f, 0.0f, 1.0f}},
+            {{-0.4f, -0.4f, 0.0f},{1.0f, 0.0f, 0.0f}},
+            {{0.4f, -0.4f, 0.0f},{0.0f, 1.0f, 0.0f}}  
+        };
+        Pegasos::Window window("My Window", 600, 800, 0);
         Pegasos::RendererBuilder builder(Pegasos::RendererPlans::VULKAN_API, &window);
         builder.build();
         auto* vulkanRenderer = builder.getRenderer();
+        vulkanRenderer->addJob(vertecies1);
+        vulkanRenderer->addJob(vertecies2);
         VoidCallback drawOp = static_cast<VoidCallback>(std::bind(&Pegasos::Renderer::drawJobs, vulkanRenderer));
         window.addCycleCallback(&drawOp);
         window.run();
         delete vulkanRenderer;
-    }catch(std::exception& err){
-        std::cerr << err.what() << "\n";
-        return 255;
-    }
+    // }catch(std::exception& err){
+    //     std::cerr << err.what() << "\n";
+    //     return 255;
+    // }
     return 0;
 }
