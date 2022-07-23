@@ -5,6 +5,8 @@
 
 #ifdef _WIN32
 #include <stdexcept>
+#else
+#include <cstring>
 #endif
 
 namespace Pegasos{

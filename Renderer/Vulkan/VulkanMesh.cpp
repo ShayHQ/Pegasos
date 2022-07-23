@@ -1,7 +1,5 @@
 #include "./VulkanMesh.hpp"
 
-#include <cstring>
-
 using namespace Pegasos;
 
 VulkanMesh::VulkanMesh(VulkanRenderer* renderer, std::vector<Vertex> vertecies){
