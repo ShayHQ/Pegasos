@@ -8,7 +8,7 @@ VulkanMesh::VulkanMesh(VkDevice device, VkPhysicalDeviceMemoryProperties memoryP
     this->deviceRef = device;
     this->memoryProps = memoryProps;
     this->bufferRef = VK_NULL_HANDLE;
-    createBuffer(vertecies);
+    createMesh(vertecies);
 }
 
 
@@ -43,38 +43,42 @@ uint32_t findMemoryTypeIndex(VkPhysicalDeviceMemoryProperties deviceMemProps,uin
     return -1;
 }
 
-void VulkanMesh::createBuffer(std::vector<Vertex> vertecies){
-    this->created = true;
-    this->offset = 0;
-    void* dataPtr;
-
+void VulkanMesh::allocateBuffer(VkBuffer& bufferRef, VkDeviceMemory& memRef, VkMemoryPropertyFlags memProps, VkBufferUsageFlags usage){
     VkMemoryRequirements requiremets;
     VkBufferCreateInfo bufferInfo = {};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+    bufferInfo.usage = usage;
     bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    bufferInfo.size = vertecies.size() * sizeof(Vertex);
+    bufferInfo.size = this->meshSize * sizeof(Vertex);
 
-    if (vkCreateBuffer(this->deviceRef, &bufferInfo, nullptr, &this->bufferRef) != VK_SUCCESS){
+    if (vkCreateBuffer(this->deviceRef, &bufferInfo, nullptr, &bufferRef) != VK_SUCCESS){
         throw std::runtime_error("Failed to create vertex buffer reference");
     }
 
-    vkGetBufferMemoryRequirements(this->deviceRef, this->bufferRef, &requiremets);
+    vkGetBufferMemoryRequirements(this->deviceRef, bufferRef, &requiremets);
 
     VkMemoryAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = requiremets.size;
     allocInfo.memoryTypeIndex = findMemoryTypeIndex(this->memoryProps, requiremets.memoryTypeBits, 
-                                                    VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+                                                    memProps);
     
-    if (vkAllocateMemory(this->deviceRef, &allocInfo, nullptr, &this->bufferMemoryRef) != VK_SUCCESS){
+    if (vkAllocateMemory(this->deviceRef, &allocInfo, nullptr, &memRef) != VK_SUCCESS){
         throw std::runtime_error("Failed to allocate memory for vertex buffer");
     }
 
-    vkBindBufferMemory(this->deviceRef, this->bufferRef, this->bufferMemoryRef, static_cast<VkDeviceSize>(this->offset));
+    vkBindBufferMemory(this->deviceRef, bufferRef, memRef, static_cast<VkDeviceSize>(this->offset));
+}
 
-    vkMapMemory(this->deviceRef, this->bufferMemoryRef, static_cast<VkDeviceSize>(this->offset), bufferInfo.size, 0, &dataPtr);
-    std::memcpy(dataPtr, vertecies.data(), (size_t)bufferInfo.size);
-    vkUnmapMemory(this->deviceRef, this->bufferMemoryRef);
+void VulkanMesh::createMesh(std::vector<Vertex> vertecies){
+    this->created = true;
+    this->offset = 0;
+    void* dataPtr;
     this->meshSize = vertecies.size();
+    size_t totalSize = this->meshSize * sizeof(Vertex);
+    allocateBuffer(this->bufferRef, this->bufferMemoryRef, 
+        VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
+    vkMapMemory(this->deviceRef, this->bufferMemoryRef, static_cast<VkDeviceSize>(this->offset), totalSize, 0, &dataPtr);
+    std::memcpy(dataPtr, vertecies.data(), totalSize);
+    vkUnmapMemory(this->deviceRef, this->bufferMemoryRef);
 }

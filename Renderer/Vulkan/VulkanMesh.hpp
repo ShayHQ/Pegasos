@@ -19,6 +19,7 @@ namespace Pegasos{
         uint32_t size() override;
         ~VulkanMesh() override;
     private:
-        void createBuffer(std::vector<Vertex> vertecies);
+        void allocateBuffer(VkBuffer& bufferRef, VkDeviceMemory& memRef, VkMemoryPropertyFlags memProps, VkBufferUsageFlags usage); 
+        void createMesh(std::vector<Vertex> vertecies);
     };    
 }
