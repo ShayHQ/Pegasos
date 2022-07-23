@@ -4,7 +4,7 @@
 namespace Pegasos{
 
     class GLRenderer;
-    class GLGPipeline{
+    struct GLGPipeline{
         // TBD
         GLuint program;
         std::function<void(GLuint)> applyVertexAttributes;

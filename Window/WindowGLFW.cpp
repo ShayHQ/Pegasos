@@ -27,7 +27,11 @@ Window::Window(char* windowName, uint32_t height, uint32_t width, uint32_t apiHi
 
     glfwInit();
 
-    glfwWindowHint(GLFW_CLIENT_API, apiHint);
+    if (!apiHint){
+        glfwWindowHint(GLFW_CLIENT_API, apiHint);
+    }
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     this->handler = glfwCreateWindow(width, height, static_cast<const char*>(windowName), nullptr, nullptr);
@@ -39,6 +43,7 @@ Window::~Window(){
 }
 
 void Window::run(){
+    bool isOpenGL = glfwGetCurrentContext() != nullptr;
     while (!glfwWindowShouldClose(this->handler)){
         callbackMutex.lock();
 
@@ -48,7 +53,7 @@ void Window::run(){
 
         drawFps();
         glfwPollEvents();
-
+        if (isOpenGL) glfwSwapBuffers(this->handler);
         callbackMutex.unlock();
     }
 }

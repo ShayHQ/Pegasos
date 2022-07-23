@@ -12,6 +12,7 @@ add_library(VulkanRenderer
 add_library(GLRenderer 
     OpenGL/GLRenderer.cpp
     OpenGL/GLRendererPlan.cpp
+    OpenGL/GLMesh.cpp
 )
 
 add_library(Renderer 

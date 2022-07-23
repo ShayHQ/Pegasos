@@ -7,16 +7,18 @@ namespace Pegasos{
     class Window;
 
     struct GLDetails{
-        GLfloat width, height;
+        int width, height;
         bool isGLADInit;
     };
 
     class GLBasicPipelinePlan;
-    class GLGPipeline;
+    struct GLGPipeline;
     class GLRenderer : public Renderer
     {
-        GLGPipeline* pipeline;        
+        GLGPipeline* pipeline;
         GLDetails details;
+        std::vector<GLuint> vaos;
+        uint32_t maxAVOAllocated;
         friend class GLBasicPipelinePlan;
     public:
         GLRenderer(GLDetails& details);

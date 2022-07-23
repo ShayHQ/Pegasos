@@ -66,7 +66,7 @@ int Renderer::addJob(std::vector<Vertex> job){
     int retries = 0;
     std::map<int, RenderJob*>::iterator found;
     do{
-        jobID = rand() / INT16_MAX;
+        jobID = rand() % INT16_MAX;
         found = this->jobs.find(jobID);
         if (MAXIMUM_RETRIES == retries++){
             throw std::runtime_error("Failed to add render job, nax retries reached!");

@@ -11,5 +11,9 @@ GLBasicPipelinePlan::GLBasicPipelinePlan(GLRenderer* renderer){
 
 
 void GLBasicPipelinePlan::createPipeline(){
-
+    // Nothing to do here yet
 }
+
+ GLGPipeline GLBasicPipelinePlan::getPipeline(){
+     return this->pipeline;
+ }
