@@ -35,6 +35,8 @@ Window::Window(char* windowName, uint32_t height, uint32_t width, uint32_t apiHi
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     this->handler = glfwCreateWindow(width, height, static_cast<const char*>(windowName), nullptr, nullptr);
+    static VoidCallback fpsCallback = static_cast<VoidCallback>(drawFps);
+    this->addCycleCallback(&fpsCallback);
 }
 
 Window::~Window(){
@@ -50,8 +52,6 @@ void Window::run(){
         for(const auto& callback : this->cycleCallbacks){
             (*callback)();
         }
-
-        drawFps();
         glfwPollEvents();
         if (isOpenGL) glfwSwapBuffers(this->handler);
         callbackMutex.unlock();
