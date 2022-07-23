@@ -66,6 +66,8 @@ void VulkanRendererPlan::createDevice(){
 
     queueFamilies.insert(this->details.physicalDetails.families.graphicsFamily);
     queueFamilies.insert(this->details.physicalDetails.families.presentFamiliy);
+    queueFamilies.insert(this->details.physicalDetails.families.transferFamiliy);
+    queueFamilies.insert(this->details.physicalDetails.families.computeFamiliy);
 
     for (const auto& familyQueue : queueFamilies){
         VkDeviceQueueCreateInfo queueCreateInfo = {};
@@ -93,4 +95,6 @@ void VulkanRendererPlan::createDevice(){
 
     vkGetDeviceQueue(this->details.device, this->details.physicalDetails.families.graphicsFamily, 0, &this->details.graphic);
     vkGetDeviceQueue(this->details.device, this->details.physicalDetails.families.presentFamiliy, 0, &this->details.present);
+    vkGetDeviceQueue(this->details.device, this->details.physicalDetails.families.transferFamiliy, 0, &this->details.transfer);
+    vkGetDeviceQueue(this->details.device, this->details.physicalDetails.families.computeFamiliy, 0, &this->details.compute);
 }

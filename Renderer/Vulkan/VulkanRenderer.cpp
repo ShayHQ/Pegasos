@@ -12,6 +12,8 @@ VulkanRenderer::VulkanRenderer(VulkanDetails& details){
     this->instance          = details.instance;
     this->graphic           = details.graphic;
     this->present           = details.present;
+    this->transfer          = details.transfer;
+    this->compute           = details.compute;
     this->physicalDetails   = details.physicalDetails;
     this->surface           = details.surface;
     this->swapchainDetails  = details.swapchainDetails;
@@ -193,5 +195,5 @@ void VulkanRenderer::drawJobs(){
 }
 
 RenderJob* VulkanRenderer::createJob(std::vector<Vertex> job){
-    return new VulkanMesh(this->device, this->physicalDetails.deviceMemProps, job);
+    return new VulkanMesh(this, job);
 }

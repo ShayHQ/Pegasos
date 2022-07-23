@@ -23,6 +23,14 @@ void QueueFamiliyIndices::findFamilies(VkPhysicalDevice physicalDevice, VkSurfac
             this->graphicsFamily = i;
         }
 
+        if (queueProp.queueCount > 0 && queueProp.queueFlags & VK_QUEUE_TRANSFER_BIT){
+            this->transferFamiliy = i;
+        }
+
+        if (queueProp.queueCount > 0 && queueProp.queueFlags & VK_QUEUE_COMPUTE_BIT){
+            this->computeFamiliy = i;
+        }
+
         vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
         if (presentSupport == VK_TRUE){
             this->presentFamiliy = i;
@@ -37,5 +45,5 @@ void QueueFamiliyIndices::findFamilies(VkPhysicalDevice physicalDevice, VkSurfac
 
 
 bool QueueFamiliyIndices::isValid(){
-    return graphicsFamily > -1 && presentFamiliy > -1;
+    return graphicsFamily > -1 && presentFamiliy > -1 && transferFamiliy > -1 && computeFamiliy > -1;
 }

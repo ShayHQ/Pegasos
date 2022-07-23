@@ -11,7 +11,7 @@ namespace Pegasos{
     class Window;
 
     struct QueueFamiliyIndices{
-        int32_t graphicsFamily = -1, presentFamiliy = -1;
+        int32_t graphicsFamily = -1, presentFamiliy = -1, transferFamiliy = -1, computeFamiliy = -1;
 
         bool isValid();
         void findFamilies(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
@@ -45,7 +45,7 @@ namespace Pegasos{
         VkSurfaceKHR surface;
         PhysicalDeviceDetails physicalDetails;
         VkDevice device;
-        VkQueue graphic, present;
+        VkQueue graphic, present, transfer, compute;
         SwapchainDetails swapchainDetails;
     };
 
@@ -57,13 +57,14 @@ namespace Pegasos{
         VkSurfaceKHR surface;
         PhysicalDeviceDetails physicalDetails;
         VkDevice device;
-        VkQueue graphic, present;
+        VkQueue graphic, present, transfer, compute;
         SwapchainDetails swapchainDetails;
         VulkanGPipeline* pipeline;        
         VkCommandPool cmdPool;
         std::vector<VkCommandBuffer> commandBuffers;
 
         friend class VulkanBasicPipelinePlan;
+        friend class VulkanMesh;
     public:
         VulkanRenderer(VulkanDetails& details);
         ~VulkanRenderer() override;

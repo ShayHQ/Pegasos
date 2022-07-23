@@ -4,10 +4,13 @@
 
 using namespace Pegasos;
 
-VulkanMesh::VulkanMesh(VkDevice device, VkPhysicalDeviceMemoryProperties memoryProps, std::vector<Vertex> vertecies){
-    this->deviceRef = device;
-    this->memoryProps = memoryProps;
+VulkanMesh::VulkanMesh(VulkanRenderer* renderer, std::vector<Vertex> vertecies){
+    this->deviceRef = renderer->device;
+    this->memoryProps = renderer->physicalDetails.deviceMemProps;
     this->bufferRef = VK_NULL_HANDLE;
+    this->transfer = transfer;
+
+    this->rendererRef = renderer;
     createMesh(vertecies);
 }
 
@@ -76,9 +79,57 @@ void VulkanMesh::createMesh(std::vector<Vertex> vertecies){
     void* dataPtr;
     this->meshSize = vertecies.size();
     size_t totalSize = this->meshSize * sizeof(Vertex);
-    allocateBuffer(this->bufferRef, this->bufferMemoryRef, 
-        VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
-    vkMapMemory(this->deviceRef, this->bufferMemoryRef, static_cast<VkDeviceSize>(this->offset), totalSize, 0, &dataPtr);
+
+    allocateBuffer(this->stagedRef, this->stagedMemoryRef, 
+        VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+
+    vkMapMemory(this->deviceRef, this->stagedMemoryRef, static_cast<VkDeviceSize>(this->offset), totalSize, 0, &dataPtr);
     std::memcpy(dataPtr, vertecies.data(), totalSize);
-    vkUnmapMemory(this->deviceRef, this->bufferMemoryRef);
+    vkUnmapMemory(this->deviceRef, this->stagedMemoryRef);
+
+    allocateBuffer(this->bufferRef, this->bufferMemoryRef, 
+        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT , VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+
+    copyStagedToFinalBuffers();
+}
+
+void VulkanMesh::copyStagedToFinalBuffers(){
+    VkCommandBuffer copyCmd;
+
+    VkCommandBufferAllocateInfo allocateInfo = {};
+    allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocateInfo.commandPool = this->rendererRef->cmdPool;
+    allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocateInfo.commandBufferCount = 1;
+
+    if (vkAllocateCommandBuffers(this->deviceRef, &allocateInfo, &copyCmd) != VK_SUCCESS){
+        throw std::runtime_error("Failed to allocate command buffer for transfer!");
+    }
+
+    VkCommandBufferBeginInfo beginInfo = {};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.pInheritanceInfo = nullptr;
+    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+    beginInfo.pNext = nullptr;
+
+    vkBeginCommandBuffer(copyCmd, &beginInfo);
+    VkBufferCopy cpyRegion;
+    cpyRegion.dstOffset = 0;
+    cpyRegion.srcOffset = 0;
+    cpyRegion.size = this->meshSize * sizeof(Vertex);
+    vkCmdCopyBuffer(copyCmd, this->stagedRef, this->bufferRef, 1, &cpyRegion);
+    vkEndCommandBuffer(copyCmd);
+    
+    VkSubmitInfo submitInfo = {};
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &copyCmd;
+    submitInfo.pNext = nullptr;
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+    vkQueueSubmit(this->rendererRef->transfer, 1, & submitInfo, VK_NULL_HANDLE);
+    vkQueueWaitIdle(this->rendererRef->transfer);
+
+    vkFreeCommandBuffers(this->deviceRef, this->rendererRef->cmdPool, 1, &copyCmd);
+    vkDestroyBuffer(this->deviceRef, this->stagedRef, nullptr);
+    vkFreeMemory(this->deviceRef, this->stagedMemoryRef, nullptr);
 }
