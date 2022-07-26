@@ -48,7 +48,7 @@ void GLRenderer::drawJobs(){
     int i = 0;
     for (auto& job : this->jobs){
         glBindVertexArray(this->vaos[i++]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, job.second->size() / sizeof(Vertex));
     }
     glBindVertexArray(0);
 }
